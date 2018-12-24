@@ -1,8 +1,5 @@
 package com.ericsoares.restful.webservices.domain;
 
-import javax.persistence.Entity;
-
-@Entity
 public class HelloWorldBean {
 
 	private String message;

@@ -20,8 +20,9 @@ public class HelloWorldController {
 	}
 	
 	@GetMapping(value = "/hello-world-bean")
-	public HelloWorldBean hellWorldBean() {
-		return new HelloWorldBean("Hello World");
+	public HelloWorldBean helloWorldBean() {
+		return new HelloWorldBean("Hello world");
 	}
+	
 	
 }
