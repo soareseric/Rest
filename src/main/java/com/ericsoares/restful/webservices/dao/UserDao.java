@@ -21,11 +21,11 @@ public class UserDao {
 		users.add(new User(3, "Will", new Date()));
 	}
 	
-	private List<User> findAll(){
+	public List<User> findAll(){
 		return users;
 	}
 	
-	private User save(User user) {
+	public User save(User user) {
 		if (user.getId() == null) {
 			user.setId(++usersCount);
 		}
@@ -33,7 +33,7 @@ public class UserDao {
 		return user;
 	}
 	
-	private User findOne() {
+	public User findOne() {
 		for (User user : users) {
 			return user;
 		}
