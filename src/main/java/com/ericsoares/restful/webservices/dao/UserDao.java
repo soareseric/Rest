@@ -33,9 +33,10 @@ public class UserDao {
 		return user;
 	}
 	
-	public User findOne() {
+	public User findOne(int id) {
 		for (User user : users) {
-			return user;
+			if (user.getId() == id)
+				return user;
 		}
 		return null;
 	}

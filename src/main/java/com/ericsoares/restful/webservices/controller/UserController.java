@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ericsoares.restful.webservices.dao.UserDao;
 import com.ericsoares.restful.webservices.domain.User;
+import com.ericsoares.restful.webservices.exceptions.UserNotFoundException;
 
 @RestController
 public class UserController {
@@ -21,15 +22,25 @@ public class UserController {
 	@Autowired
 	private UserDao dao;
 
-	@GetMapping("/users")
+	@GetMapping("/users")	
 	public List<User> retrieveAllUser() {
 		return dao.findAll();
 	}
 
 	@GetMapping("/user/{id}")
-	public User retrieveUser(@PathVariable int id) {
-		return dao.findOne();
+	public User retrieveUser(@PathVariable("id") int id) {
+		User user = dao.findOne(id);
+		if (user == null) {
+			throw new UserNotFoundException("id - " + id);
+		}
+		return user;
 	}
+	
+//	@GetMapping(value = "/user/{id}")
+//	public ResponseEntity<User> find(@PathVariable Integer id) {
+//		User obj = dao.findOne();
+//		return ResponseEntity.ok().body(obj);
+//	}
 
 	@PostMapping("/users")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
