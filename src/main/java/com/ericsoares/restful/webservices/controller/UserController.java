@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,37 +21,37 @@ import com.ericsoares.restful.webservices.exceptions.UserNotFoundException;
 public class UserController {
 
 	@Autowired
-	private UserDao dao;
+	private UserDao service;
 
-	@GetMapping("/users")	
+	@GetMapping("/users")
 	public List<User> retrieveAllUser() {
-		return dao.findAll();
+		return service.findAll();
 	}
 
 	@GetMapping("/user/{id}")
-	public User retrieveUser(@PathVariable("id") int id) {
-		User user = dao.findOne(id);
+	public User retrieveUser(@PathVariable Integer id) {
+		User user = service.findById(id);
 		if (user == null) {
 			throw new UserNotFoundException("id - " + id);
 		}
 		return user;
 	}
-	
-//	@GetMapping(value = "/user/{id}")
-//	public ResponseEntity<User> find(@PathVariable Integer id) {
-//		User obj = dao.findOne();
-//		return ResponseEntity.ok().body(obj);
-//	}
 
 	@PostMapping("/users")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
-		User savedUser = dao.save(user);
-		
-		URI location = ServletUriComponentsBuilder
-		.fromCurrentRequest().path("/{id}")
-		.buildAndExpand(savedUser.getId()).toUri();
-	
-		return ResponseEntity.created(location).build();
-	}	
+		User savedUser = service.save(user);
 
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
+				.toUri();
+
+		return ResponseEntity.created(location).build();
+	}
+
+	@DeleteMapping("/user/{id}")
+	public void deleteUser(@PathVariable Integer id) {
+		User user = service.deleteById(id);
+		if (user == null) {
+			throw new UserNotFoundException("id - " + id);
+		}
+	}
 }
